@@ -45,7 +45,6 @@ export class CreatCustomerComponent implements OnInit {
     this.maxDate = today;
   }
 
-  mssg!: string;
   isSubmitted: boolean = false;
   minDate: any = "1950-01-01";
   maxDate: any;
@@ -53,9 +52,6 @@ export class CreatCustomerComponent implements OnInit {
   newDate: any;
   gender_mssg: any;
   error_mssg!: String;
-
-  // Recapcha
-  // recaptcha: any;
 
   // select the customer is new or old
   onSubmit_func(e: any) {
@@ -69,10 +65,8 @@ export class CreatCustomerComponent implements OnInit {
   // create customer
   onSubmit() {
     const response = grecaptcha.getResponse();
-    console.log(response)
-    let params = new HttpParams().set('recaptchaResponse',response);
     if (!response) {
-      console.log(grecaptcha.getResponse().length);
+      this.recaptcha?.setErrors({'false': true});
     } else {
       this.newDate = this.dateOfBirth?.value;
       let d_input: any = new Date(this.newDate);
@@ -103,9 +97,7 @@ export class CreatCustomerComponent implements OnInit {
   onUpdate() {
     const response = grecaptcha.getResponse();
     if (response.length === 0) {
-      this.mssg = 'This field is required';
-      console.log(grecaptcha.getResponse().length);
-      return;
+      this.recaptcha?.setErrors({'false': true});
     }
       this.newDate = this.dateOfBirth?.value;
       let d_input: any = new Date(this.newDate);
@@ -129,8 +121,6 @@ export class CreatCustomerComponent implements OnInit {
           this.dateOfBirth?.setErrors({ 'future': true });
         }
       }
-
-
   }
 
   form = new FormGroup({
@@ -180,7 +170,6 @@ export class CreatCustomerComponent implements OnInit {
     return this.form.get('recaptcha');
   }
 
-
   // validate firstname to accept only 30 letters
   first_func(e: any) {
     if (e.target.value.length >= 30) {
@@ -212,8 +201,4 @@ export class CreatCustomerComponent implements OnInit {
       e.target.preventDefault();
     }
   }
-
-
-
-
 }

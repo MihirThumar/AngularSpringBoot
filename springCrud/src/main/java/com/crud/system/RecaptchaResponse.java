@@ -6,7 +6,6 @@ import lombok.Data;
 public class RecaptchaResponse {
 
 	private boolean success;
-	private String challenge_ts;
 	private String hostname;
-	
+
 }

@@ -109,8 +109,8 @@
       <!-- recaptcha -->
       <re-captcha id="recaptcha" name="recaptcha" siteKey="6LdkVWYkAAAAAM3sn5Ox3B219iOlbz_BX6Ma0eNm" formControlName="recaptcha"
       ></re-captcha>
-      <div class="danger" *ngIf="recaptcha && recaptcha.errors?.['required']">This Fiels is required</div>
-      <div class="danger" *ngIf="form.invalid">{{mssg}}</div>
+      <div class="danger" *ngIf="recaptcha && recaptcha.errors?.['required'] && (recaptcha.touched || recaptcha.dirty)">This Fiels is required</div>
+      <div class="danger" *ngIf="recaptcha && recaptcha.errors?.['false']">Please Select this first</div>
 
       <!-- Button -->
       <div class="btn_class">

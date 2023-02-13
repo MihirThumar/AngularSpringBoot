@@ -21,7 +21,5 @@ public interface CustomerService {
 
 	// deleting customer
 	public Map<String, Boolean> deleteCustomer(Integer id);
-	
-	
 
 }
