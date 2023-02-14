@@ -15,5 +15,5 @@ export class Customer {
   age!: number;
   gender!: 'male' | 'female';
   email!: string;
-
+  
 }

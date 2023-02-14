@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.crud.model.Customer;
+import com.crud.model.RecaptchaToken;
 import com.crud.service.CustomerService;
 
 @RestController
@@ -25,12 +26,12 @@ public class MainController {
 	@Autowired
 	private CustomerService customerService;
 
-	String recaptchaToken;
+	String token;
 
-	@GetMapping("/recptcha")
-	public void getRecaptchaToken(@RequestParam(name = "recaptchaResponse") String recaptchaResponse) {
+	@PostMapping("/recptcha")
+	public void getRecaptchaToken(@RequestBody RecaptchaToken recaptchaToken) {
 		try {
-			recaptchaToken = recaptchaResponse;
+			token = recaptchaToken.getRecaptchaToken();
 		} catch (Exception e) {
 			new ResponseEntity<Object>(e.getMessage(), new HttpHeaders(), 404);
 		}
@@ -39,7 +40,7 @@ public class MainController {
 	@PostMapping("/add-customer")
 	public Object registerCustomer(@RequestBody Customer customer) {
 		try {
-			return customerService.addCustomer(recaptchaToken, customer);
+			return customerService.addCustomer(token, customer);
 		} catch (Exception e) {
 			return new ResponseEntity<Object>(e.getMessage(), new HttpHeaders(), 404);
 		}
@@ -64,9 +65,9 @@ public class MainController {
 	}
 
 	@PutMapping("/update-customer/{id}")
-	public Object editCustomer(@PathVariable int id, @RequestBody Customer customer) {
+	public Object editCustomer(@RequestBody Customer customer, @PathVariable int id) {
 		try {
-			return customerService.updateCustomer(customer, id);
+			return customerService.updateCustomer(token, customer, id);
 		} catch (Exception e) {
 			return new ResponseEntity<Object>(e.getMessage(), new HttpHeaders(), 404);
 		}

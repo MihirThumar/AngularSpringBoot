@@ -17,7 +17,7 @@ public interface CustomerService {
 	public Customer getCustomerById(int id);
 
 	// updating customer
-	public Customer updateCustomer(Customer customer, int id);
+	public Customer updateCustomer(String token, Customer customer, int id);
 
 	// deleting customer
 	public Map<String, Boolean> deleteCustomer(Integer id);

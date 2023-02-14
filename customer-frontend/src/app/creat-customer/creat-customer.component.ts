@@ -5,6 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { RECAPTCHA_SETTINGS, ReCaptchaV3Service } from 'ng-recaptcha';
 import { HttpParams } from '@angular/common/http';
+import { Token } from '../classes/token';
 
 @Component({
   selector: 'app-creat-customer',
@@ -15,6 +16,7 @@ export class CreatCustomerComponent implements OnInit {
 
   id!: number;
   customer: Customer = new Customer();
+  token: Token = new Token();
 
   constructor(
     private customerService: CustomerService,
@@ -73,20 +75,17 @@ export class CreatCustomerComponent implements OnInit {
       if (this.form.invalid) {
         this.form.setErrors({ 'incoorect': true });
       } else {
-        if (this.newDate <= this.maxDate) {
-          if (d_input.getFullYear() >= 1950) {
-            this.customerService.getToken(response).subscribe(data => {
-            });
+          if (this.newDate <= this.maxDate && d_input.getFullYear() >= 1950) {
+            this.customerService.postToken(this.token).subscribe(data =>{});
             this.customerService.createCustomre(this.customer).subscribe(data => {
               this.router.navigate(['/customer']);
             },
               error => {
                 this.error_mssg = error.error;
               });
-          } else {
-            this.dateOfBirth?.setErrors({ 'past': true });
-          }
-        } else {
+        } else if(d_input.getFullYear() <= 1950) {
+          this.dateOfBirth?.setErrors({ 'past': true });
+        }else {
           this.dateOfBirth?.setErrors({ 'future': true });
         }
       }
@@ -96,6 +95,8 @@ export class CreatCustomerComponent implements OnInit {
   // edit customer
   onUpdate() {
     const response = grecaptcha.getResponse();
+    this.token.recaptchaToken = response;
+    console.log(response);
     if (response.length === 0) {
       this.recaptcha?.setErrors({'false': true});
     }
@@ -104,20 +105,17 @@ export class CreatCustomerComponent implements OnInit {
       if (this.form.invalid) {
         this.form.setErrors({ 'incoorect': true });
       } else {
-        if (this.newDate <= this.maxDate) {
-          if (d_input.getFullYear() >= 1950) {
-            this.customerService.getToken(response).subscribe(data => {
-            });
+        if (this.newDate <= this.maxDate && d_input.getFullYear() >= 1950) {
+            this.customerService.postToken(this.token).subscribe(data =>{});
             this.customerService.updateCustomer(this.id, this.customer).subscribe(data => {
               this.router.navigate(['/customer']);
             },
               error => {
                 this.error_mssg = error.error;
               });
-          } else {
-            this.dateOfBirth?.setErrors({ 'past': true });
-          }
-        } else {
+        } else if(d_input.getFullYear() <= 1950) {
+          this.dateOfBirth?.setErrors({ 'past': true });
+        }else {
           this.dateOfBirth?.setErrors({ 'future': true });
         }
       }

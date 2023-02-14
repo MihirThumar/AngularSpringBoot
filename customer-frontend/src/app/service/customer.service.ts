@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Customer } from '../customer';
-import { Params } from '@angular/router';
-import { ReCaptchaType } from 'ngx-captcha';
-
+import { Token } from '../classes/token';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +14,7 @@ export class CustomerService {
     post: "http://localhost:8080/add-customer",
     put: "http://localhost:8080/update-customer",
     delete: "http://localhost:8080/delete-customer",
-    getToken: "http://localhost:8080/recptcha"
+    sendToken: "http://localhost:8080/recptcha"
   };
 
   constructor(private httpclient: HttpClient) { }
@@ -41,8 +39,8 @@ export class CustomerService {
     return this.httpclient.delete(`${this.url.delete}/${id}`);
   }
 
-  getToken(param: String): Observable<Object> {
-    return this.httpclient.get(`${this.url.getToken}?recaptchaResponse=${param}`)
+  postToken(token: Token): Observable<Object> {
+    return this.httpclient.post(`${this.url.sendToken}`, token);
   }
 
 }
