@@ -3,8 +3,6 @@ import { Customer } from '../customer';
 import { CustomerService } from '../service/customer.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { RECAPTCHA_SETTINGS, ReCaptchaV3Service } from 'ng-recaptcha';
-import { HttpParams } from '@angular/common/http';
 import { Token } from '../classes/token';
 
 @Component({
